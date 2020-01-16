@@ -53,8 +53,10 @@ object truncateHbase {
       for (result: Result <- rs) {
         val delete = new Delete(result.getRow)
         mutator.mutate(delete)
-        mutator.close()
       }
+      mutator.flush()
+      mutator.close()
+      table.close()
     }
   catch
       {case e: IOException => e.printStackTrace
